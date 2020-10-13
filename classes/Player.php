@@ -23,19 +23,10 @@ class Player
         array_push($this->cards, $deck->drawCard());
         if ($this->getScore() > self::MAX_VALUE) {
             return $this->getLost();
-    }
+        }
         return $this->cards;
 
 
-    }
-    public function getCards()
-    {
-        return $this->cards;
-    }
-
-    public function surrender()
-    {
-        return $this->lost = true;
     }
 
     public function getScore()
@@ -48,15 +39,25 @@ class Player
 
     }
 
+    public function getLost()
+    {
+        return $this->lost = true;
+
+    }
+
+    public function getCards()
+    {
+        return $this->cards;
+    }
+
 //    public function hasLost()
 //    {
 //        return $this->lost;
 //    }
 
-    public function getLost()
+    public function surrender()
     {
         return $this->lost = true;
-
     }
 }
 

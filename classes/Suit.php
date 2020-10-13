@@ -15,20 +15,28 @@ class Suit
 
     private string $name;
 
-    private function __construct(string $name) {
+    private function __construct(string $name)
+    {
         $this->name = $name;
     }
 
-    static function SPADE() {
+    static function SPADE()
+    {
         return new Suit(self::TYPE_SPADE);
     }
-    static function HEART() {
+
+    static function HEART()
+    {
         return new Suit(self::TYPE_HEART);
     }
-    static function DIAMOND() {
+
+    static function DIAMOND()
+    {
         return new Suit(self::TYPE_DIAMOND);
     }
-    static function CLUB() {
+
+    static function CLUB()
+    {
         return new Suit(self::TYPE_CLUB);
     }
 
@@ -37,14 +45,14 @@ class Suit
         return $this->name;
     }
 
-    public function getColor() : string
+    public function getColor(): string
     {
         return in_array($this->name, [self::TYPE_HEART, self::TYPE_DIAMOND]) ? 'red' : 'black';
     }
 
-    public function getStartValue() : int
+    public function getStartValue(): int
     {
-        switch($this->name) {
+        switch ($this->name) {
             case self::TYPE_SPADE;
                 return self::CHAR_SPADE;
             case self::TYPE_CLUB;

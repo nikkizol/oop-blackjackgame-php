@@ -10,7 +10,6 @@ class Blackjack
     private $deck;
 
 
-
     public function __construct()
     {
         $deck = new Deck();
@@ -27,6 +26,11 @@ class Blackjack
         return $this->player;
     }
 
+    public function setPlayer(Player $player): void
+    {
+        $this->player = $player;
+    }
+
     public function getDealer()
     {
         return $this->dealer;
@@ -35,11 +39,6 @@ class Blackjack
     public function getDeck()
     {
         return $this->deck;
-    }
-
-    public function setPlayer(Player $player): void
-    {
-        $this->player = $player;
     }
 }
 

@@ -9,7 +9,8 @@ class Deck
     /** @var Card[] */
     private array $cards = [];
 
-    public function __construct() {
+    public function __construct()
+    {
         $suits = [
             Suit::SPADE(),
             Suit::HEART(),
@@ -17,26 +18,27 @@ class Deck
             Suit::DIAMOND(),
         ];
 
-        foreach ($suits AS $suit) {
-            foreach(range(1, self::CARDS_PER_SUIT) AS $i) {
-                if($i === self::KNIGHT_CARD) continue;
+        foreach ($suits as $suit) {
+            foreach (range(1, self::CARDS_PER_SUIT) as $i) {
+                if ($i === self::KNIGHT_CARD) continue;
 
                 $this->cards[] = new Card($suit, $i);
             }
         }
     }
 
-    public function shuffle() : void {
+    public function shuffle(): void
+    {
         shuffle($this->cards);
     }
 
     /** @return Card[] */
-    public function getCards() : array
+    public function getCards(): array
     {
         return $this->cards;
     }
 
-    public function drawCard() :? Card
+    public function drawCard(): ?Card
     {
         return array_shift($this->cards);
     }
