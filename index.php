@@ -8,6 +8,7 @@ require "Blackjack.php";
 require "Card.php";
 require "Player.php";
 require "Suit.php";
+require "dealer.php";
 //require "view.php";
 
 session_start();
@@ -42,6 +43,7 @@ if (isset($_POST['surrender'])) {
 //        $player = $_SESSION["blackjack"]->getPlayer();
 //        $dealer = $_SESSION["blackjack"]->getDealer();
       if ($player->surrender() == "true"){
+          $player->getLost();
           $lost = "You lost!!!";
       }
 //        $_SESSION["blackjack"]->setPlayer($player);
@@ -50,7 +52,9 @@ if (isset($_POST['surrender'])) {
 }
 
 if (isset($_POST['stand'])) {
-  $dealer->hit($deck);
+    if ($dealer->hit($deck) == "true") {
+        $lost = "You lost!!!";
+    }
 }
 
 if (isset($_POST['new'])) {
@@ -110,10 +114,13 @@ if (isset($_POST['new'])) {
 
 
 <form method="post">
-    <button type="submit" name="new" class="btn btn-primary">New Game</button>
+<!--    --><?php // if ((!$dealer->getLost()) && (!$player->getLost())) : ?>
     <button type="submit" name="hit" class="btn btn-primary">Hit</button>
     <button type="submit" name="stand" class="btn btn-primary">Stand</button>
     <button type="submit" name="surrender" class="btn btn-primary">Surrender</button>
+<!--    --><?php //else:?>
+    <button type="submit" name="new" class="btn btn-primary">New Game</button>
+<!--    --><?php //endif; ?>
 </form>
 </body>
 </html>
