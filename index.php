@@ -21,40 +21,31 @@ if (!isset($_SESSION["blackjack"])) {
 $deck = $_SESSION["blackjack"]->getDeck();
 $player = $_SESSION["blackjack"]->getPlayer();
 $dealer = $_SESSION["blackjack"]->getDealer();
-$lost = "";
+$result = "";
 
 
 if (isset($_POST['hit'])) {
-//    if (isset($_SESSION["blackjack"])) {
-//        $deck = $_SESSION["blackjack"]->getDeck();
-//        $player = $_SESSION["blackjack"]->getPlayer();
-//        $dealer = $_SESSION["blackjack"]->getDealer();
-        if ($player->hit($deck) == "true") {
-            $lost = "You lost!!!";
-        }
-//        $_SESSION["blackjack"]->setPlayer($player);
-//        $player->getScore();
-//    }
+    if ($player->hit($deck) == "true") {
+        $result = "You lost!!!";
+    }
+
 }
 
 if (isset($_POST['surrender'])) {
-//    if (isset($_SESSION["blackjack"])) {
-//        $deck = $_SESSION["blackjack"]->getDeck();
-//        $player = $_SESSION["blackjack"]->getPlayer();
-//        $dealer = $_SESSION["blackjack"]->getDealer();
-      if ($player->surrender() == "true"){
-          $player->getLost();
-          $lost = "You lost!!!";
-      }
-//        $_SESSION["blackjack"]->setPlayer($player);
-//        $player->getScore();
-//    }
+    if ($player->surrender() == "true") {
+        $result = "You lost!!!";
+    }
 }
 
 if (isset($_POST['stand'])) {
-    if ($dealer->hit($deck) == "true") {
-        $lost = "You lost!!!";
-    }
+    $dealer->hit($deck);
+    if ($dealer->getScore() > $player->getScore() && $dealer->getScore() <= 21) {
+        $player->getLost();
+        $result = "You lost!!!";
+    } elseif ($dealer->getScore() == $player->getScore()) {
+        $result = "It's a draw";
+    } else $result = "You win!!!";
+
 }
 
 if (isset($_POST['new'])) {
@@ -74,11 +65,9 @@ if (isset($_POST['new'])) {
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css"
+          rel="stylesheet"/>
     <title>Blackjack</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://kit.fontawesome.com/97e98690fe.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <style>
         .cards {
             font-size: 900%;
@@ -88,39 +77,62 @@ if (isset($_POST['new'])) {
             text-align: center;
         }
 
+        h2 {
+            color: white;
+            background: grey;
+            position: absolute;
+            top: 20%;
+            left: 45%;
+            z-index: 1;
+        }
+
+
         body {
             margin: auto;
             width: 80%;
+            text-align: center;
+        }
+
+        .col {
+            margin: auto;
+            padding: 5px;
+        }
+
+        form {
+            display: inline-block;
         }
 
     </style>
 </head>
 
 <h1>Blackjack</h1>
-<h2><?php echo $lost ?></h2>
-<h3>Player</h3>
-<h4>Score:<?php echo $player->getScore() ?></h4>
-
-<p class="cards"> <?php
-    foreach ($player->getCards() as $card) { ?><?php echo $card->getUnicodeCharacter(true);
-    } ?></p>
-
-<h3>Dealer</h3>
-<h4>Score:<?php echo $dealer->getScore() ?></h4>
-
-<p class="cards"> <?php
-    foreach ($dealer->getCards() as $card) { ?><?php echo $card->getUnicodeCharacter(true);
-    } ?></p>
-
-
+<h2><?php echo $result ?></h2>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3>Player</h3>
+            <h4>Score:<?php echo $player->getScore() ?></h4>
+            <p class="cards"> <?php
+                foreach ($player->getCards() as $card) { ?><?php echo $card->getUnicodeCharacter(true);
+                } ?></p>
+        </div>
+        <div class="col">
+            <h3>Dealer</h3>
+            <h4>Score:<?php echo $dealer->getScore() ?></h4>
+            <p class="cards"> <?php
+                foreach ($dealer->getCards() as $card) { ?><?php echo $card->getUnicodeCharacter(true);
+                } ?></p>
+        </div>
+    </div>
+</div>
 <form method="post">
-<!--    --><?php // if ((!$dealer->getLost()) && (!$player->getLost())) : ?>
-    <button type="submit" name="hit" class="btn btn-primary">Hit</button>
-    <button type="submit" name="stand" class="btn btn-primary">Stand</button>
-    <button type="submit" name="surrender" class="btn btn-primary">Surrender</button>
-<!--    --><?php //else:?>
-    <button type="submit" name="new" class="btn btn-primary">New Game</button>
-<!--    --><?php //endif; ?>
+    <?php if (!$result) : ?>
+        <button type="submit" name="hit" class="btn btn-success">Hit</button>
+        <button type="submit" name="stand" class="btn btn-warning">Stand</button>
+        <button type="submit" name="surrender" class="btn btn-danger">Surrender</button>
+    <?php else : ?>
+        <button type="submit" name="new" class="btn btn-primary">New Game</button>
+    <?php endif; ?>
 </form>
 </body>
 </html>

@@ -12,12 +12,9 @@ class Player
 
     public function __construct(Deck $deck)
     {
-//        $this->cards [] = $deck->drawCard();
-//        $this->cards [] = $deck->drawCard();
         array_push($this->cards, $deck->drawCard());
         array_push($this->cards, $deck->drawCard());
-////        var_dump($deck->drawCard());
-//        var_dump($this->cards);
+
     }
 
 
@@ -51,10 +48,10 @@ class Player
 
     }
 
-    public function hasLost()
-    {
-        return $this->lost;
-    }
+//    public function hasLost()
+//    {
+//        return $this->lost;
+//    }
 
     public function getLost()
     {
