@@ -27,12 +27,14 @@ $dealerScore = "";
 
 if (isset($_POST['hit'])) {
     if ($player->hit($deck) == "true") {
+        $dealerScore= $dealer->getScore();
         $result = "You lost!!!";
     }
 
 }
 
 if (isset($_POST['surrender'])) {
+    $dealerScore= $dealer->getScore();
     if ($player->surrender() == "true") {
         $result = "You lost!!!";
     }
