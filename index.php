@@ -22,6 +22,7 @@ $deck = $_SESSION["blackjack"]->getDeck();
 $player = $_SESSION["blackjack"]->getPlayer();
 $dealer = $_SESSION["blackjack"]->getDealer();
 $result = "";
+$dealerScore = "";
 
 
 if (isset($_POST['hit'])) {
@@ -39,6 +40,7 @@ if (isset($_POST['surrender'])) {
 
 if (isset($_POST['stand'])) {
     $dealer->hit($deck);
+    $dealerScore = $dealer->getScore();
     if ($dealer->getScore() > $player->getScore() && $dealer->getScore() <= 21) {
         $player->getLost();
         $result = "You lost!!!";
@@ -102,6 +104,13 @@ if (isset($_POST['new'])) {
             display: inline-block;
         }
 
+        <?php if ((!isset($_POST['stand'])) && (!isset($_POST['surrender'])) && (!$result)) : ?>
+        .dealer span:nth-child(2) {
+            filter: blur(10px);
+            -webkit-filter: blur(20px);
+        }
+
+        <?php endif; ?>
     </style>
 </head>
 <body>
@@ -118,8 +127,8 @@ if (isset($_POST['new'])) {
         </div>
         <div class="col">
             <h3>Dealer</h3>
-            <h4>Score:<?php echo $dealer->getScore() ?></h4>
-            <p class="cards"> <?php
+            <h4>Score:<?php echo $dealerScore ?></h4>
+            <p class="cards dealer"> <?php
                 foreach ($dealer->getCards() as $card) { ?><?php echo $card->getUnicodeCharacter(true);
                 } ?></p>
         </div>
